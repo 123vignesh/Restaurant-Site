@@ -1,14 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Card, CardBody, CardText, CardTitle, CardImg } from "reactstrap";
 
-export default class DishDetail extends Component {
-  constructor(props){
-    super(props);
+function RenderDishCard(props){
+  return (
+<Card key={props.dish.id}>
+            <CardImg top src={props.dish.image} alt={props.dish.name} />
+            <CardBody>
+              <CardTitle>{props.dish.name}</CardTitle>
+              <CardText>{props.dish.description}</CardText>
+            </CardBody>
+          </Card>
+  )
+} 
+
+
+
  
-    console.log(this.props.dish);
-  }
-go = (com) => {
+  
+ const go = (com) => {
     if (com !== null) {
       var result = com.map((co) => {
         return (
@@ -26,25 +36,21 @@ go = (com) => {
       <div></div>;
     }
   };
-  render() {
-    if(this.props.dish!==undefined){
+
+
+const DishDetail=(props)=>{
+    if(props.dish!==undefined){
     return (
       <div className="container">
       <div className="row">
         <div className="col-12 col-md-5 m-1">
-          <Card key={this.props.dish.id}>
-            <CardImg top src={this.props.dish.image} alt={this.props.dish.name} />
-            <CardBody>
-              <CardTitle>{this.props.dish.name}</CardTitle>
-              <CardText>{this.props.dish.description}</CardText>
-            </CardBody>
-          </Card>
+          <RenderDishCard dish={props.dish}/>
         </div>
         <div className="col-12 col-md-5 m-1">
           <header>
             <h4>Comments</h4>
           </header>
-          {this.go(this.props.dish.comments)}
+          {go(props.dish.comments)}
         </div>
       </div>
       </div>
@@ -53,4 +59,5 @@ go = (com) => {
       return(<div></div>)
     }
   }
-}
+
+export default DishDetail;
