@@ -3,31 +3,12 @@ import React, { Component } from "react";
 import { Card, CardBody, CardText, CardTitle, CardImg } from "reactstrap";
 
 export default class DishDetail extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.state = {};
+ 
+    console.log(this.props.dish);
   }
-
-  DateFormat = (date) => {
-    var k = date.split("T");
-    let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    var t = k[0].split("-")[1];
-    var t1 = k[0].split("-")[0];
-    var t2 = k[0].split("-")[2];
-    if (t < 10) {
-      var Mon = t[1];
-      var fin = monthNames[Mon - 1];
-
-      var g = fin + " " + t2 + "," + t1;
-      return g;
-    } else {
-      var Mon1 = t;
-      var fin1 = monthNames[Mon1 - 1];
-      var y = fin1 + " " + t2 + "," + t1;
-      return y;
-    }
-  };
-  go = (com) => {
+go = (com) => {
     if (com !== null) {
       var result = com.map((co) => {
         return (
@@ -35,7 +16,7 @@ export default class DishDetail extends Component {
             <li>{co.comment}</li>
             <br />
             <li>
-              -- {co.author}, {this.DateFormat(co.date)}
+              -- {co.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(co.date)))}
             </li>
           </ul>
         );
@@ -46,14 +27,16 @@ export default class DishDetail extends Component {
     }
   };
   render() {
+    if(this.props.dish!==undefined){
     return (
+      <div className="container">
       <div className="row">
         <div className="col-12 col-md-5 m-1">
-          <Card key={this.props.id}>
-            <CardImg top src={this.props.src} alt={this.props.name} />
+          <Card key={this.props.dish.id}>
+            <CardImg top src={this.props.dish.image} alt={this.props.dish.name} />
             <CardBody>
-              <CardTitle>{this.props.name}</CardTitle>
-              <CardText>{this.props.description}</CardText>
+              <CardTitle>{this.props.dish.name}</CardTitle>
+              <CardText>{this.props.dish.description}</CardText>
             </CardBody>
           </Card>
         </div>
@@ -61,9 +44,13 @@ export default class DishDetail extends Component {
           <header>
             <h4>Comments</h4>
           </header>
-          {this.go(this.props.comments)}
+          {this.go(this.props.dish.comments)}
         </div>
       </div>
+      </div>
     );
+    }else{
+      return(<div></div>)
+    }
   }
 }
