@@ -8,6 +8,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
+  FormFeedback,
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
@@ -23,6 +24,12 @@ class Contact extends Component {
       message: "",
       agree: false,
       contactType: "Tel.",
+      touched: {
+        firstname: "",
+        lastname: "",
+        email: "",
+        telnum: "",
+      },
     };
   }
 
@@ -37,7 +44,50 @@ class Contact extends Component {
     e.preventDefault();
   };
 
+
+  validate = (firstname, lastname, email, telnum) => {
+      
+    let errors = {
+      firstname: "",
+      lastname: "",
+      email: "",
+      telnum: "",
+    };
+
+    if (this.state.touched.firstname && firstname.length < 3) {
+      errors.firstname = "First name field should contain >=3 character";
+    } else if (this.state.touched.firstname && firstname.length > 10) {
+      errors.firstname = "First name field should not exceed 10 character";
+    }
+    if (this.state.touched.lastname && lastname.length < 3) {
+      errors.lastname = "Last name field should contain >=3 character";
+    } else if (this.state.touched.lastname && lastname.length > 10) {
+      errors.lastname = "Last name field should not exceed 10 character";
+    }
+
+    const reg = /^\d+$/;
+    if (this.state.touched.telnum && !reg.test(telnum)) {
+      errors.telnum =
+        "tel no should contain only numbers of with total digit 10";
+    }
+
+    if (
+      this.state.touched.email &&
+      email.split("").filter((char) => char === "@").length !== 1
+    ) {
+      errors.email = "Email should contain one @ character";
+    }
+    return errors;
+  };
+
   render() {
+    let error = this.validate(
+      this.state.firstname,
+      this.state.lastname,
+      this.state.email,
+      this.state.telnum
+    );
+    
     return (
       <div className="container">
         <div className="row">
@@ -117,8 +167,15 @@ class Contact extends Component {
                     name="firstname"
                     placeholder="First Name"
                     value={this.state.firstname}
+                    onBlur={()=>{
+                        
+                        this.setState({
+                            touched:{ ...this.state.touched,["firstname"]:true}
+                        })
+                    }}
                     onChange={this.handleInputChange}
                   />
+                  <div style={{color:"red"}}>{error.firstname}</div>
                 </Col>
               </FormGroup>
 
@@ -133,8 +190,14 @@ class Contact extends Component {
                     name="lastname"
                     placeholder="Last Name"
                     value={this.state.lastname}
+                    onBlur={()=>{
+                        this.setState({
+                            touched:{...this.state.touched,["lastname"]:true}
+                        })
+                    }}
                     onChange={this.handleInputChange}
                   />
+                   <div style={{color:"red"}}>{error.lastname}</div>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -148,8 +211,14 @@ class Contact extends Component {
                     name="email"
                     placeholder="Email"
                     value={this.state.email}
+                    onBlur={()=>{
+                        this.setState({
+                            touched:{...this.state.touched,["email"]:true}
+                        })
+                    }}
                     onChange={this.handleInputChange}
                   />
+                 <div style={{color:"red"}}>{error.email}</div>
                 </Col>
               </FormGroup>
 
@@ -163,8 +232,14 @@ class Contact extends Component {
                     id="telnum"
                     name="telnum"
                     placeholder="Tel Num"
+                    onBlur={(e)=>{
+                        this.setState({
+                            touched:{...this.state.touched,[e.target.name]:true}
+                        })
+                    }}
                     onChange={this.handleInputChange}
                   />
+                   <div style={{color:"red"}}>{error.telnum}</div>
                 </Col>
               </FormGroup>
 
