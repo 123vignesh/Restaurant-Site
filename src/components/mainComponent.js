@@ -6,6 +6,7 @@ import Contact from "./ContactComponent";
 import Header from "../components/HeaderComponent";
 import DishDetail from "../components/DishdetailComponent";
 import Menu from "./MenuComponent";
+import About from "./AboutComponent";
 import { DISHES } from "../shared/dishes";
 import { PROMOTIONS } from "../shared/promotions";
 import { LEADERS } from "../shared/leaders";
@@ -17,7 +18,7 @@ class Main extends Component {
     super(props);
     this.state = {
       dishes: DISHES,
-      leader: LEADERS,
+      leaders: LEADERS,
       promotion: PROMOTIONS,
       comment: COMMENTS,
     };
@@ -30,7 +31,7 @@ class Main extends Component {
         promotion={
           this.state.promotion.filter((promotion) => promotion.featured)[0]
         }
-        leader={this.state.leader.filter((leader) => leader.featured)[0]}
+        leaders={this.state.leaders.filter((leader) => leader.featured)[0]}
       />
       
     );
@@ -66,6 +67,7 @@ class Main extends Component {
           />
           <Route path="/menu/:dishID" component={DishDetailRender} />
           <Route exact path="/contactus" component={Contact} />
+          <Route exact path="/aboutus" component={() => <About leaders={this.state.leaders} />} />
           <Redirect to="/home" />
         </Switch>
         <Footer />

@@ -33,7 +33,7 @@ export default class HeaderComponent extends Component {
           <div className="container">
             <NavbarToggler onClick={this.toggleNav} />
             <NavbarBrand className="mr-auto" href="/">
-              <img src="" alt="Restaurant Logo" width="31px" height="31px" />
+              <img src="/assets/images/logo.png" alt="Restaurant Logo" width="40px" height="41px" />
             </NavbarBrand>
 
             <Collapse isOpen={this.state.isNavOpen} navbar>
