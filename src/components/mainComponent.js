@@ -1,55 +1,76 @@
-import React,{Component} from "react";
-import {Switch,Redirect,Route} from "react-router-dom"
+import React, { Component } from "react";
+import { Switch, Redirect, Route } from "react-router-dom";
 
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
 import Header from "../components/HeaderComponent";
+import DishDetail from "../components/DishdetailComponent";
 import Menu from "./MenuComponent";
-import {DISHES} from "../shared/dishes";
-import {PROMOTIONS} from "../shared/promotions";
-import {LEADERS} from "../shared/leaders";
+import { DISHES } from "../shared/dishes";
+import { PROMOTIONS } from "../shared/promotions";
+import { LEADERS } from "../shared/leaders";
+import { COMMENTS } from "../shared/comments";
 import Footer from "./FooterComponent";
 
-class Main extends Component{
-  constructor(props){
+class Main extends Component {
+  constructor(props) {
     super(props);
-    this.state={
-      dishes:DISHES,
-      leader:LEADERS,
-      promotion:PROMOTIONS
-    }
+    this.state = {
+      dishes: DISHES,
+      leader: LEADERS,
+      promotion: PROMOTIONS,
+      comment: COMMENTS,
+    };
   }
 
-  
-
-  HomePage=()=>{
+  HomePage = () => {
     return (
-        <Home dishes={this.state.dishes.filter((dish)=>dish.featured)[0]}
-        promotion={this.state.promotion.filter((promotion)=>promotion.featured)[0]}
-        leader={this.state.leader.filter((leader)=>leader.featured)[0]}
-        
+      <Home
+        dishes={this.state.dishes.filter((dish) => dish.featured)[0]}
+        promotion={
+          this.state.promotion.filter((promotion) => promotion.featured)[0]
+        }
+        leader={this.state.leader.filter((leader) => leader.featured)[0]}
+      />
+      
+    );
+  };
+
+  render() {
+    const DishDetailRender = ({ match }) => {
+     
+   
+      return (
+        <DishDetail
+          dish={
+            this.state.dishes.filter(
+              (dish) => dish.id === parseInt(match.params.dishID, 10)
+            )[0]
+          }
+          comment={this.state.comment.filter(
+            (comment) => comment.dishId === parseInt(match.params.dishID, 10)
+          )}
         />
-    )
-}
+      );
+    };
 
-  render(){
-
-
-
-  return (
-    <div>
-      <Header/>
-<Switch>
-
-<Route path="/home" component={this.HomePage} />   
-<Route exact path="/menu" component={()=><Menu dishes={this.state.dishes} />} /> 
-<Route exact path="/contactus" component={Contact} /> 
-<Redirect to="/home"/>
-
-</Switch>     
-        <Footer/>
-    </div>
-  );
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route path="/home" component={this.HomePage} />
+          <Route
+            exact
+            path="/menu"
+            component={() => <Menu dishes={this.state.dishes} />}
+          />
+          <Route path="/menu/:dishID" component={DishDetailRender} />
+          <Route exact path="/contactus" component={Contact} />
+          <Redirect to="/home" />
+        </Switch>
+        <Footer />
+      </div>
+    );
   }
 }
 
