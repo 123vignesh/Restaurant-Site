@@ -14,8 +14,8 @@ import Footer from "./FooterComponent";
 const mapStateToProps = state => {
   return {
     dishes: state.dishes,
-    comments: state.comments,
-    promotions: state.promotions,
+    comment: state.comment,
+    promotion: state.promotion,
     leaders: state.leaders
   }
 }
@@ -27,24 +27,28 @@ class Main extends Component {
     
   }
 
-  HomePage = () => {
-    return (
-      <Home
-        dishes={this.props.dishes.filter((dish) => dish.featured)[0]}
-        promotion={
-          this.props.promotion.filter((promotion) => promotion.featured)[0]
-        }
-        leaders={this.props.leaders.filter((leader) => leader.featured)[0]}
-      />
-      
-    );
-  };
+ 
 
   render() {
-    const DishDetailRender = ({ match }) => {
-     
-   
+
+const    HomePage = () => {
       return (
+        <Home
+          dishes={this.props.dishes.filter((dish) => dish.featured)[0]}
+          promotion={
+            this.props.promotion.filter((promotion) => promotion.featured)[0]
+          }
+          leaders={this.props.leaders.filter((leader) => leader.featured)[0]}
+        />
+        
+      );
+    };
+
+
+
+
+const DishDetailRender = ({ match }) => {
+        return (
         <DishDetail
           dish={
             this.props.dishes.filter(
@@ -62,7 +66,7 @@ class Main extends Component {
       <div>
         <Header />
         <Switch>
-          <Route path="/home" component={this.HomePage} />
+          <Route path="/home" component={HomePage} />
           <Route
             exact
             path="/menu"
