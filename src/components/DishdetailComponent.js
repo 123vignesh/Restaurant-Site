@@ -50,11 +50,12 @@ class RenderComment extends Component {
   };
 
   handleSubmit = (values) => {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
     this.toggleModal();
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    
   };
   render() {
+    
     if (this.props.com !== null) {
       var result = this.props.com.map((co) => {
         return (
@@ -70,6 +71,7 @@ class RenderComment extends Component {
               }).format(new Date(Date.parse(co.date)))}
             </li>
           </ul>
+             
         );
       });
       return (
@@ -209,7 +211,13 @@ function DishDetail(props) {
               <h4>Comments</h4>
             </header>
 
-            <RenderComment com={props.comment} />
+            <RenderComment com={props.comment} 
+            addComment={props.addComment}
+            dishId={props.dish.id}
+            />
+
+         
+
           </div>
         </div>
       </div>
