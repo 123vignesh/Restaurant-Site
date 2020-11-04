@@ -18,18 +18,40 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LocalForm, Errors, Control} from "react-redux-form";
+import {Loading} from "./LoadingComponent"
 
-function RenderDishCard({ dish }) {
-  console.log(dish);
+function RenderDishCard(props) {
+  console.log("gaandu");
+  console.log(props)
+  if(props.isLoading){
+    return(
+      <div className="container">
+                    <div className="row">            
+                        <Loading/>
+                    </div>
+                </div>
+    )
+  }else if(props.errMess!==null && props.errMess!==undefined){
+    return(
+      <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+    )
+  }else{
+    
   return (
-    <Card key={dish.id}>
-      <CardImg top src={dish.image} alt={dish.name} />
+    
+    <Card key={props.dish.id}>
+      <CardImg top src={props.dish.image} alt={props.dish.name} />
       <CardBody>
-        <CardTitle>{dish.name}</CardTitle>
-        <CardText>{dish.description}</CardText>
+        <CardTitle>{props.dish.name}</CardTitle>
+        <CardText>{props.dish.description}</CardText>
       </CardBody>
     </Card>
   );
+  }
 }
 
 const required=(val)=>val && val.length;

@@ -8,9 +8,26 @@ import {
   CardImgOverlay,
   Breadcrumb,BreadcrumbItem
 } from "reactstrap";
+import {Loading} from "./LoadingComponent";
 
+ function RenderMenuItem ({dish,isLoading,errMess}){
+   if(isLoading){
+     return(
+      <div className="container">
+      <div className="row">            
+          <Loading/>
+      </div>
+  </div>
+     )
+   }else if(errMess){
+    <div className="container">
+    <div className="row">            
+        <h4>{errMess}</h4>
+    </div>
+</div>
+   }else{
 
- function RenderMenuItem ({dish}){
+   
  return (
    <Link to={`/menu/${dish.id}`}>
   <Card key={dish.id}>
@@ -21,14 +38,14 @@ import {
 </Card>
 </Link>
  )
-   
+ }
 }
   
 const Menu=(props)=>{
-    const menu = props.dishes.map((dish) => {
+    const menu = props.dishes.dishes.map((dish) => {
       return (
         <div className="col-12 col-md-5 m-1">
-          <RenderMenuItem dish={dish} />
+          <RenderMenuItem dish={dish} isLoading={props.dishes.isLoading} errMess={props.dishes.errMess} />
         </div>
       );
     });
