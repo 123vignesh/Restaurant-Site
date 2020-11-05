@@ -10,7 +10,9 @@ import Menu from "./MenuComponent";
 import About from "./AboutComponent";
 
 import Footer from "./FooterComponent";
-import {addComment ,fetchDishes} from "../redux/ActionCreator"
+import {addComment ,fetchComments,fetchDishes,fetchPromos} from "../redux/ActionCreator"
+import { actions } from 'react-redux-form';
+
 
 const mapStateToProps = state => {
   return {
@@ -26,7 +28,11 @@ const mapDispatchToProps = dispatch => ({
   addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
 
   
-  fetchDishes:()=>dispatch(fetchDishes())
+  fetchDishes:()=>dispatch(fetchDishes()),
+  fetchPromos:()=>dispatch(fetchPromos()),
+  fetchComments:()=>dispatch(fetchComments()),
+
+  resetFeedbackForm: () => { dispatch(actions.reset('feedback'))}
 
 });
 
@@ -41,6 +47,8 @@ class Main extends Component {
 
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchPromos();
+    this.props.fetchComments();
   }
    
 
@@ -53,8 +61,12 @@ const    HomePage = () => {
           dishesLoading={this.props.dishes.isLoading}
           dishesErrMess={this.props.dishes.errMess}
           promotion={
-            this.props.promotion.filter((promotion) => promotion.featured)[0]
-          }
+            this.props.promotion.promotions.filter((promotion) => promotion.featured)[0]
+           }
+           promotionLoading={this.props.promotion.isLoading}
+           promotionErrMess={this.props.promotion.errMess}
+
+
           leaders={this.props.leaders.filter((leader) => leader.featured)[0]}
         />
         
@@ -73,10 +85,12 @@ const DishDetailRender = ({ match }) => {
               (dish) => dish.id === parseInt(match.params.dishID, 10)
             )[0]
           }
-          comment={this.props.comment.filter(
+          comment={this.props.comment.comments.filter(
             (comment) => comment.dishId === parseInt(match.params.dishID, 10)
           )}
-          addComment={this.props.addComment}
+           addComments={this.props.addComments}
+           commentErrMess={this.props.CommentsFailed}
+          CommentAdd={this.props.addComments}
           isLoading={this.props.dishes.isLoading}
           errMess={this.props.dishes.errMess}
         />
@@ -94,8 +108,10 @@ const DishDetailRender = ({ match }) => {
             component={() => <Menu dishes={this.props.dishes} />}
           />
           <Route path="/menu/:dishID" component={DishDetailRender} />
-          <Route exact path="/contactus" component={Contact} />
+          <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+
           <Route exact path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
+
           <Redirect to="/home" />
         </Switch>
         <Footer />

@@ -10,7 +10,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import {baseURL} from "../shared/baseUrl"
 import { Loading } from "./LoadingComponent";
 function RenderCard(props) {
   if (props.isLoading) {
@@ -20,7 +20,7 @@ function RenderCard(props) {
   } else {
     return (
       <Card>
-        <CardImg src={props.item.image} alt={props.item.name} />
+        <CardImg src={baseURL+ props.item.image} alt={props.item.name} />
         <CardBody>
           <CardTitle>{props.item.name}</CardTitle>
           {props.item.designation ? (
@@ -56,8 +56,8 @@ function Home(props) {
         </div>
         <div className="col-12 col-md m-1">
           <RenderCard item={props.promotion}
-              isLoading={false}
-              isErrMess={null}
+              isLoading={props.promotionLoading}
+              isErrMess={props.promotionErrMess}
           />
         </div>
         <div className="col-12 col-md m-1">

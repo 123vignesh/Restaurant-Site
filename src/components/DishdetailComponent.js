@@ -19,9 +19,10 @@ import {
 import { Link } from "react-router-dom";
 import { LocalForm, Errors, Control} from "react-redux-form";
 import {Loading} from "./LoadingComponent"
+import { baseURL } from "../shared/baseUrl";
 
 function RenderDishCard(props) {
-  console.log("gaandu");
+ 
   console.log(props)
   if(props.isLoading){
     return(
@@ -44,7 +45,7 @@ function RenderDishCard(props) {
   return (
     
     <Card key={props.dish.id}>
-      <CardImg top src={props.dish.image} alt={props.dish.name} />
+      <CardImg top src={baseURL+ props.dish.image} alt={props.dish.name} />
       <CardBody>
         <CardTitle>{props.dish.name}</CardTitle>
         <CardText>{props.dish.description}</CardText>
@@ -234,6 +235,7 @@ function DishDetail(props) {
             </header>
 
             <RenderComment com={props.comment} 
+
             addComment={props.addComment}
             dishId={props.dish.id}
             />

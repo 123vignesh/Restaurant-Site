@@ -9,6 +9,7 @@ import {
   Breadcrumb,BreadcrumbItem
 } from "reactstrap";
 import {Loading} from "./LoadingComponent";
+import {baseURL} from "../shared/baseUrl"
 
  function RenderMenuItem ({dish,isLoading,errMess}){
    if(isLoading){
@@ -31,7 +32,7 @@ import {Loading} from "./LoadingComponent";
  return (
    <Link to={`/menu/${dish.id}`}>
   <Card key={dish.id}>
-  <CardImg width="100%" src={dish.image} alt={dish.name} />
+  <CardImg width="100%" src={baseURL+dish.image} alt={dish.name} />
   <CardImgOverlay>
     <CardTitle>{dish.name}</CardTitle>
   </CardImgOverlay>
