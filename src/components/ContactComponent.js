@@ -1,15 +1,23 @@
 import React, { Component } from "react";
-import { Col, Label, Breadcrumb, BreadcrumbItem, Button,Row } from "reactstrap";
+import {
+  Col,
+  Label,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  Row,
+} from "reactstrap";
 
-import { Form, Errors, Control,actions } from "react-redux-form";
+import { Form, Errors, Control } from "react-redux-form";
 
 import { Link } from "react-router-dom";
 
-const required=(val)=>val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => val && (val.length >= len);
-const ValidNum=(val)=>!isNaN(Number(val));
-const ValidEmail=(val)=>/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
+const ValidNum = (val) => !isNaN(Number(val));
+const ValidEmail = (val) =>
+  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
   constructor(props) {
@@ -17,10 +25,16 @@ class Contact extends Component {
   }
 
   handleSubmit = (values) => {
-    this.props.PostFeedBack(values.firstname,values.lastname,values.email,values.telnum,values.contactType,values.textarea)
+    this.props.PostFeedBack(
+      values.firstname,
+      values.lastname,
+      values.email,
+      values.telnum,
+      values.contactType,
+      values.textarea
+    );
     alert("Thank You for Yor Feedback: " + JSON.stringify(values));
     this.props.resetFeedbackForm();
-    
   };
 
   render() {
@@ -91,7 +105,10 @@ class Contact extends Component {
           </div>
 
           <div className="col-12 col-md-9">
-            <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
+            <Form
+              model="feedback"
+              onSubmit={(values) => this.handleSubmit(values)}
+            >
               <Row className="form-group">
                 <Label md={2} htmlFor="firstname">
                   <strong>First Name</strong>
@@ -104,18 +121,20 @@ class Contact extends Component {
                     name="firstname"
                     placeholder="First Name"
                     validators={{
-                      required, minLength: minLength(3), maxLength: maxLength(10)
-                  }}
+                      required,
+                      minLength: minLength(3),
+                      maxLength: maxLength(10),
+                    }}
                   />
                   <Errors
                     className="text-danger"
                     model=".firstname"
                     show="touched"
                     messages={{
-                      required: 'Required',
-                      minLength: 'Must be greater than 2 characters',
-                      maxLength: 'Must be 10 characters or less'
-                  }}
+                      required: "Required",
+                      minLength: "Must be greater than 2 characters",
+                      maxLength: "Must be 10 characters or less",
+                    }}
                   />
                 </Col>
               </Row>
@@ -132,18 +151,22 @@ class Contact extends Component {
                     placeholder="Last Name"
                     className="form-control"
                     validators={{
-                      required,minLength:minLength(3),maxLength:maxLength(10)
+                      required,
+                      minLength: minLength(3),
+                      maxLength: maxLength(10),
                     }}
                   />
                   <Errors
-                      className="text-danger"
-                      show="touched"
-                      model=".lastname"
-                      messages={{
-                        required:"Required",
-                        minLength:"Minimum number of characters should be more than 2 characters",
-                        maxLength:"Maximum number of characters should be less than 10 characters"
-                      }}                  
+                    className="text-danger"
+                    show="touched"
+                    model=".lastname"
+                    messages={{
+                      required: "Required",
+                      minLength:
+                        "Minimum number of characters should be more than 2 characters",
+                      maxLength:
+                        "Maximum number of characters should be less than 10 characters",
+                    }}
                   />
                 </Col>
               </Row>
@@ -160,7 +183,8 @@ class Contact extends Component {
                     name="email"
                     placeholder="Email"
                     validators={{
-                      required,ValidEmail
+                      required,
+                      ValidEmail,
                     }}
                   />
                   <Errors
@@ -168,10 +192,9 @@ class Contact extends Component {
                     show="touched"
                     model=".email"
                     messages={{
-                      required:"Required",
-                      ValidEmail:"Enter valid email"
+                      required: "Required",
+                      ValidEmail: "Enter valid email",
                     }}
-
                   />
                 </Col>
               </Row>
@@ -188,7 +211,8 @@ class Contact extends Component {
                     placeholder="Tel No"
                     className="form-control"
                     validators={{
-                      required,ValidNum
+                      required,
+                      ValidNum,
                     }}
                   />
                   <Errors
@@ -196,8 +220,8 @@ class Contact extends Component {
                     show="touched"
                     model=".telnum"
                     messages={{
-                      required:"Required",
-                      ValidNum:"Enter valid number"
+                      required: "Required",
+                      ValidNum: "Enter valid number",
                     }}
                   />
                 </Col>
@@ -207,12 +231,15 @@ class Contact extends Component {
                 <Col md={{ size: 6, offset: 2 }}>
                   <div className="form-check">
                     <Label check>
-                      <Control.checkbox model=".agree" className="form-check-input" name="agree" />{" "}
+                      <Control.checkbox
+                        model=".agree"
+                        className="form-check-input"
+                        name="agree"
+                      />{" "}
                       <strong>May we contact you?</strong>
                     </Label>
                   </div>
                 </Col>
-            
 
                 <Col md={{ size: 3, offset: 1 }}>
                   <Control.select

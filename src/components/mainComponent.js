@@ -34,8 +34,10 @@ const mapDispatchToProps = (dispatch) => ({
   PostComment: (dishId, rating, author, comment) =>
     dispatch(PostComment(dishId, rating, author, comment)),
 
-    PostFeedBack: (firstname,lastname,email,telnum,contactType,message) =>
-    dispatch(PostFeedBack(firstname,lastname,email,telnum,contactType,message)),
+  PostFeedBack: (firstname, lastname, email, telnum, contactType, message) =>
+    dispatch(
+      PostFeedBack(firstname, lastname, email, telnum, contactType, message)
+    ),
 
   fetchDishes: () => dispatch(fetchDishes()),
   fetchPromos: () => dispatch(fetchPromos()),
@@ -47,9 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-  }
+  
 
   componentDidMount() {
     this.props.fetchDishes();
@@ -60,7 +60,6 @@ class Main extends Component {
 
   render() {
     const HomePage = () => {
-      
       return (
         <Home
           dishes={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
@@ -123,7 +122,8 @@ class Main extends Component {
                 exact
                 path="/contactus"
                 component={() => (
-                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} 
+                  <Contact
+                    resetFeedbackForm={this.props.resetFeedbackForm}
                     PostFeedBack={this.props.PostFeedBack}
                   />
                 )}
@@ -132,10 +132,13 @@ class Main extends Component {
               <Route
                 exact
                 path="/aboutus"
-                component={() => <About leaders={this.props.leaders.leaders} 
-                isLoading={this.props.leaders.isLoading}
-                errMess={this.props.leaders.errMess}
-                />}
+                component={() => (
+                  <About
+                    leaders={this.props.leaders.leaders}
+                    isLoading={this.props.leaders.isLoading}
+                    errMess={this.props.leaders.errMess}
+                  />
+                )}
               />
 
               <Redirect to="/home" />

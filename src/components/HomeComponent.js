@@ -10,9 +10,9 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import {baseURL} from "../shared/baseUrl"
+import { baseURL } from "../shared/baseUrl";
 import { Loading } from "./LoadingComponent";
-import { FadeTransform } from 'react-animation-components';
+import { FadeTransform } from "react-animation-components";
 
 function RenderCard(props) {
   if (props.isLoading) {
@@ -22,20 +22,21 @@ function RenderCard(props) {
   } else {
     return (
       <FadeTransform
-      in
-      transformProps={{
-          exitTransform: 'scale(0.5) translateY(-50%)'
-      }}>
-      <Card>
-        <CardImg src={baseURL+ props.item.image} alt={props.item.name} />
-        <CardBody>
-          <CardTitle>{props.item.name}</CardTitle>
-          {props.item.designation ? (
-            <CardSubtitle>{props.item.designation}</CardSubtitle>
-          ) : null}
-          <CardText>{props.item.description}</CardText>
-        </CardBody>
-      </Card>
+        in
+        transformProps={{
+          exitTransform: "scale(0.5) translateY(-50%)",
+        }}
+      >
+        <Card>
+          <CardImg src={baseURL + props.item.image} alt={props.item.name} />
+          <CardBody>
+            <CardTitle>{props.item.name}</CardTitle>
+            {props.item.designation ? (
+              <CardSubtitle>{props.item.designation}</CardSubtitle>
+            ) : null}
+            <CardText>{props.item.description}</CardText>
+          </CardBody>
+        </Card>
       </FadeTransform>
     );
   }
@@ -63,13 +64,15 @@ function Home(props) {
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.promotion}
-              isLoading={props.promotionLoading}
-              isErrMess={props.promotionErrMess}
+          <RenderCard
+            item={props.promotion}
+            isLoading={props.promotionLoading}
+            isErrMess={props.promotionErrMess}
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.leaders} 
+          <RenderCard
+            item={props.leaders}
             isLoading={props.leaderLoading}
             isErrMess={props.leaderErrMess}
           />
