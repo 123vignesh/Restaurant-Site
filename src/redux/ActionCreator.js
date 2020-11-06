@@ -169,3 +169,86 @@ export const addComments = (comments) => ({
   type: ActionTypes.ADD_COMMENTS,
   payload: comments,
 });
+
+
+export const fetchLeaders=()=>(dispatch)=>{
+    dispatch(LeadersLoading(true));
+
+    return fetch(baseURL+"leaders")
+    .then(response=>{
+        if(response.ok){
+            return response
+        }else{
+            var error= new Error("Error " + response.status + ": " + response.statusText)
+            error.response=response
+            throw error
+        }
+    },
+    error=>{
+        throw error
+    }
+    ).then(response=>response.json())
+    .then(response=>dispatch(AddLeaders(response)))
+    .catch(error=>alert(error.message)) 
+
+   
+}
+
+export const AddLeaders=(leaders)=>({
+    type:ActionTypes.ADD_LEADERS,
+    payload: leaders
+})
+
+export const LeadersLoading=()=>({
+    type:ActionTypes.LEADERS_LOADING
+})
+
+
+export const addFeedBack=(feedback)=>({
+     type:ActionTypes.ADD_FEEDBACK,
+     payload:feedback
+})
+
+export const PostFeedBack=(firstname,lastname,email,telnum,contactType,message)=>(dispatch)=>{
+
+    var newFeedBack={
+        firstname:firstname,
+        lastname:lastname,
+        email:email,
+        telnum:telnum,
+        contactType:contactType,
+        message:message
+    }
+
+    return fetch(baseURL+"feedback",{
+        method:"POST",
+        body:JSON.stringify(newFeedBack),
+        headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "same-origin"
+    })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "PostFeedBack " + response.status + " " + ":" + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => {
+      dispatch(addFeedBack(response));
+    })
+    .catch((error) => console.log(error));
+
+}
+

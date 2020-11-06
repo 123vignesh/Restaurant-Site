@@ -8,14 +8,34 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { baseURL } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import {Loading} from "./LoadingComponent"
 
-function RenderLeader({ leaders }) {
+function RenderLeader({ leaders ,isLoading,errMess}) {
+  if(isLoading){
+    return(
+     <div className="container">
+     <div className="row">            
+         <Loading/>
+     </div>
+ </div>
+    )
+  }else if(errMess){
+   <div className="container">
+   <div className="row">            
+       <h4>{errMess}</h4>
+   </div>
+</div>
+  }else{
   var FinalList = leaders.map((leaders) => {
     return (
+      <Stagger in>
       <div key={leaders.id} className="col-12 mt-5">
+       <Fade in>
         <Media tag="li">
           <Media left top>
-            <Media object src={leaders.image} alt={leaders.name} />
+            <Media object src={baseURL+ leaders.image} alt={leaders.name} />
           </Media>
 
           <Media body className="ml-5">
@@ -27,10 +47,16 @@ function RenderLeader({ leaders }) {
             <p>{leaders.description}</p>
           </Media>
         </Media>
+        </Fade>
       </div>
+      </Stagger>
     );
-  });
+  
+  }
+
+  );
   return FinalList;
+}
 }
 
 function About(props) {
@@ -111,7 +137,7 @@ function About(props) {
         </div>
 
         <Media list>
-          <RenderLeader leaders={props.leaders} />
+          <RenderLeader leaders={props.leaders} isLoading={props.leaders.isLoading} errMess={props.leaders.errMess}/>
         </Media>
       </div>
     </div>
