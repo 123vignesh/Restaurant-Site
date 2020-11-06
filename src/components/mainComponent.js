@@ -10,9 +10,9 @@ import Menu from "./MenuComponent";
 import About from "./AboutComponent";
 
 import Footer from "./FooterComponent";
-import {addComment ,fetchComments,fetchDishes,fetchPromos} from "../redux/ActionCreator"
+import {PostComment ,fetchComments,fetchDishes,fetchPromos} from "../redux/ActionCreator"
 import { actions } from 'react-redux-form';
-
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapStateToProps = state => {
   return {
@@ -25,7 +25,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+  PostComment: (dishId, rating, author, comment) => dispatch(PostComment(dishId, rating, author, comment)),
 
   
   fetchDishes:()=>dispatch(fetchDishes()),
@@ -88,7 +88,7 @@ const DishDetailRender = ({ match }) => {
           comment={this.props.comment.comments.filter(
             (comment) => comment.dishId === parseInt(match.params.dishID, 10)
           )}
-           addComments={this.props.addComments}
+          PostComment={this.props.PostComment}
            commentErrMess={this.props.CommentsFailed}
           CommentAdd={this.props.addComments}
           isLoading={this.props.dishes.isLoading}
@@ -100,7 +100,9 @@ const DishDetailRender = ({ match }) => {
     return (
       <div>
         <Header />
-        <Switch>
+        <TransitionGroup>
+          <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+        <Switch location={this.props.location}>
           <Route path="/home" component={HomePage} />
           <Route
             exact
@@ -114,6 +116,8 @@ const DishDetailRender = ({ match }) => {
 
           <Redirect to="/home" />
         </Switch>
+        </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );

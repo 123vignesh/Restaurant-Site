@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { LocalForm, Errors, Control} from "react-redux-form";
 import {Loading} from "./LoadingComponent"
 import { baseURL } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 function RenderDishCard(props) {
  
@@ -43,6 +44,11 @@ function RenderDishCard(props) {
   }else{
     
   return (
+    <FadeTransform
+    in
+    transformProps={{
+        exitTransform: 'scale(0.5) translateY(-50%)'
+    }}>
     
     <Card key={props.dish.id}>
       <CardImg top src={baseURL+ props.dish.image} alt={props.dish.name} />
@@ -51,6 +57,7 @@ function RenderDishCard(props) {
         <CardText>{props.dish.description}</CardText>
       </CardBody>
     </Card>
+    </FadeTransform>
   );
   }
 }
@@ -73,18 +80,22 @@ class RenderComment extends Component {
   };
 
   handleSubmit = (values) => {
-    this.toggleModal();
-    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     
+    this.props.PostComment(this.props.dishId, values.rating, values.author, values.comment);
+    this.toggleModal();
   };
   render() {
     
     if (this.props.com !== null) {
+   
       var result = this.props.com.map((co) => {
+        if(co.date!==undefined){
         return (
+          <Stagger in>
           <ul className="list-unstyled">
             <li>{co.comment}</li>
             <br />
+            <Fade in>
             <li>
               -- {co.author},{" "}
               {new Intl.DateTimeFormat("en-US", {
@@ -93,9 +104,11 @@ class RenderComment extends Component {
                 day: "2-digit",
               }).format(new Date(Date.parse(co.date)))}
             </li>
+            </Fade>
           </ul>
-             
+             </Stagger>
         );
+            }
       });
       return (
         <div>
@@ -235,9 +248,8 @@ function DishDetail(props) {
             </header>
 
             <RenderComment com={props.comment} 
-
-            addComment={props.addComment}
-            dishId={props.dish.id}
+             PostComment={props.PostComment}
+             dishId={props.dish.id}
             />
 
          

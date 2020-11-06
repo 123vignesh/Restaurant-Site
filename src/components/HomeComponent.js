@@ -12,6 +12,8 @@ import {
 } from "reactstrap";
 import {baseURL} from "../shared/baseUrl"
 import { Loading } from "./LoadingComponent";
+import { FadeTransform } from 'react-animation-components';
+
 function RenderCard(props) {
   if (props.isLoading) {
     return <Loading />;
@@ -19,6 +21,11 @@ function RenderCard(props) {
     return <h4>{props.isErrMess}</h4>;
   } else {
     return (
+      <FadeTransform
+      in
+      transformProps={{
+          exitTransform: 'scale(0.5) translateY(-50%)'
+      }}>
       <Card>
         <CardImg src={baseURL+ props.item.image} alt={props.item.name} />
         <CardBody>
@@ -29,6 +36,7 @@ function RenderCard(props) {
           <CardText>{props.item.description}</CardText>
         </CardBody>
       </Card>
+      </FadeTransform>
     );
   }
 }
